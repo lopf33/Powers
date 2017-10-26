@@ -22,3 +22,14 @@ a 2048 clone for Android with user user configurable Base Numbers
 	- Passworthashes
 
 - Menu
+
+# ToDos
+- [] Add GridView to display the game content
+- [] Implement game logic from concepts
+- [] Add LoginView with SQLITE database
+- [] Add swipe listeners to the gridView
+- [] Add animations for block movement
+- [] Add reverse functionality with history
+- [] Add ScoreboardView
+- [] Add menu
+- [] Move LoginData and Scoreboard to WebService (JSON API)
