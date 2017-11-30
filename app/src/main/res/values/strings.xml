@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Powers</string>
+    <string name="defaltScore">0</string>
 </resources>
