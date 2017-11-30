@@ -5,7 +5,9 @@ import android.graphics.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GridController {
+import de.berufsschule_freising.powers.interfaces.GridDataSupplier;
+
+public class GridController implements GridDataSupplier{
 
     private int[][] grid;
     private ArrayList<Point> emptyPoints;
@@ -13,28 +15,25 @@ public class GridController {
 
     public GridController(int sizeX, int sizeY) {
         grid = new int[sizeX][sizeY];
-        emptyPoints = new ArrayList();
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         for(int x = 0; x < grid.length; x++) {
-            for(int y = 0; x < grid[x].length; y++) {
+            for(int y = 0; y < grid[x].length; y++) {
                 grid[x][y] = 0;
             }
         }
-        scanEmpty();
     }
 
     public void generateItem() {
+        scanEmpty();
         Random rand = new Random();
         int pointId = rand.nextInt(emptyPoints.size());
         grid[emptyPoints.get(pointId).x][emptyPoints.get(pointId).y] = 2;
-        scanEmpty();
     }
 
     public void action(Direction direction) {
         add(direction);
         move(direction);
-        scanEmpty();
     }
 
     public int itemAt(int x, int y) {
@@ -54,9 +53,12 @@ public class GridController {
     }
 
     private void scanEmpty() {
-        for(int y = 0; y < grid.length; y++) {
-            for(int x = 0; x < grid[y].length; x++) {
-                emptyPoints.add(new Point(x,y));
+        emptyPoints = new ArrayList();
+        for(int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid[x].length; y++) {
+                if (grid[x][y] == 0) {
+                    emptyPoints.add(new Point(x, y));
+                }
             }
         }
     }

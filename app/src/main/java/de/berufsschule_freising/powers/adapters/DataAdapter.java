@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import de.berufsschule_freising.powers.guiitems.GridItem;
+import de.berufsschule_freising.powers.interfaces.GridDataSupplier;
 
 /**
  * Created by cami on 09.11.17.
@@ -15,17 +16,16 @@ import de.berufsschule_freising.powers.guiitems.GridItem;
 public class DataAdapter extends BaseAdapter {
 
     private Context context;
-    private int sizeX,sizeY;
+    private GridDataSupplier dataSupplier;
 
-    public DataAdapter(Context context, int sizeX, int sizeY) {
+    public DataAdapter(Context context, GridDataSupplier dataSupplier) {
         this.context = context;
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+        this.dataSupplier = dataSupplier;
     }
 
     @Override
     public int getCount() {
-        return sizeX*sizeY;
+        return dataSupplier.getSizeX()*dataSupplier.getSizeY();
     }
 
     @Override
@@ -40,8 +40,15 @@ public class DataAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        int xpos, ypos = 0;
         GridItem gridItem = new GridItem(context);
-        gridItem.setValue(2);
+        while(position - (dataSupplier.getSizeX()-1) > 0) {
+            ypos++;
+            position = position - dataSupplier.getSizeX();
+        }
+        xpos = position;
+
+        gridItem.setValue(dataSupplier.itemAt(xpos, ypos));
         if (convertView == null) {
             gridItem.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             gridItem.setPadding(8, 8, 8, 8);

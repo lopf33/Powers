@@ -22,10 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
         gv = (GridView) findViewById(R.id.gridView);
         gridController = new GridController(4,4);
-        dataAdapter = new DataAdapter(this, gridController.getSizeX(), gridController.getSizeY());
+        dataAdapter = new DataAdapter(this, gridController);
 
         gv.setAdapter(dataAdapter);
-        //add grid content to dataAdapter
 
         gv.setNumColumns(gridController.getSizeY());
 
