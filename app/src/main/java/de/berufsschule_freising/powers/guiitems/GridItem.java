@@ -11,18 +11,23 @@ import android.view.Gravity;
 
 public class GridItem extends android.support.v7.widget.AppCompatTextView {
 
-
+    private static final int GOAL = 256;
     private int value;
 
     public GridItem(Context context) {
         super(context);
         setGravity(Gravity.CENTER);
-        this.value = 2;
     }
 
     public void setValue(int value) {
         this.value = value;
         setText(String.valueOf(value));
+        if(value != 0) {
+            int r = (value < 128) ? (Math.round(255f/128f*value)) : 255;
+            int g = (value < 128) ? 255 : 255 - (Math.round(255f/128f*(value-128)));
+            super.setBackgroundColor(Color.rgb(r,g,0));
+        }
+
     }
 
     public int getValue() {
@@ -39,11 +44,4 @@ public class GridItem extends android.support.v7.widget.AppCompatTextView {
     public int getGravity() {
         return Gravity.CENTER;
     }
-
-    @Override
-    public Drawable getBackground() {
-        super.setBackgroundColor(Color.RED);
-        return super.getBackground();
-    }
-
 }

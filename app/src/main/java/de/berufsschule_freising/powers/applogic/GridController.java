@@ -5,9 +5,10 @@ import android.graphics.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
+import de.berufsschule_freising.powers.interfaces.GridDataInteract;
 import de.berufsschule_freising.powers.interfaces.GridDataSupplier;
 
-public class GridController implements GridDataSupplier{
+public class GridController implements GridDataSupplier, GridDataInteract {
 
     private int[][] grid;
     private ArrayList<Point> emptyPoints;
@@ -24,30 +25,37 @@ public class GridController implements GridDataSupplier{
         }
     }
 
+    @Override
     public void generateItem() {
         scanEmpty();
         Random rand = new Random();
         int pointId = rand.nextInt(emptyPoints.size());
-        grid[emptyPoints.get(pointId).x][emptyPoints.get(pointId).y] = 2;
+        grid[emptyPoints.get(pointId).x][emptyPoints.get(pointId).y] = 16;
     }
 
+    @Override
     public void action(Direction direction) {
+        move(direction);
         add(direction);
         move(direction);
     }
 
+    @Override
     public int itemAt(int x, int y) {
         return grid[x][y];
     }
 
+    @Override
     public int[][] getGrid() {
         return this.grid;
     }
 
+    @Override
     public int getSizeX() {
         return this.sizeX;
     }
 
+   @Override
     public int getSizeY() {
         return this.sizeY;
     }
