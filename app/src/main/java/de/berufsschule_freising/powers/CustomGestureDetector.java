@@ -50,14 +50,6 @@ public class CustomGestureDetector extends GestureDetector.SimpleOnGestureListen
             }
         }
 
-        /*for(int i = 0; i < temp.length; i++) {
-            for(int l = 0; l < temp[i].length; l++) {
-                if (temp[i][l] != gds.getGrid()[i][l]) {
-                    return true;
-                }
-            }
-        }*/
-
         if(!Arrays.deepEquals(temp, gds.getGrid())) {
             gdi.generateItem();
         }

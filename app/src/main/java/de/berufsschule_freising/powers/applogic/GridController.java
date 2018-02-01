@@ -30,7 +30,13 @@ public class GridController implements GridDataSupplier, GridDataInteract {
         scanEmpty();
         Random rand = new Random();
         int pointId = rand.nextInt(emptyPoints.size());
-        grid[emptyPoints.get(pointId).x][emptyPoints.get(pointId).y] = 16;
+        if(rand.nextInt(9) < 1)
+        {
+            grid[emptyPoints.get(pointId).x][emptyPoints.get(pointId).y] = 4;
+        }
+        else {
+            grid[emptyPoints.get(pointId).x][emptyPoints.get(pointId).y] = 2;
+        }
     }
 
     @Override
