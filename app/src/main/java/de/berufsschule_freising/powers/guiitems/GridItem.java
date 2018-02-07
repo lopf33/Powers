@@ -25,6 +25,7 @@ public class GridItem extends android.support.v7.widget.AppCompatTextView {
         super(context);
         this.context = context;
         setGravity(Gravity.CENTER);
+        setTextSize(20);
         setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_corner));
 
         colors.put(2, Color.rgb(0,191,255));

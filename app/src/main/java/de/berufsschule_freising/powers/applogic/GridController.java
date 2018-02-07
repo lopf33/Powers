@@ -3,6 +3,7 @@ package de.berufsschule_freising.powers.applogic;
 import android.graphics.Point;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import de.berufsschule_freising.powers.interfaces.GridDataInteract;
@@ -41,14 +42,41 @@ public class GridController implements GridDataSupplier, GridDataInteract {
 
     @Override
     public void action(Direction direction) {
-        move(direction);
-        add(direction);
-        move(direction);
+        action(direction, grid);
+    }
+
+    private void action(Direction direction, int[][] grid)
+    {
+        move(direction, grid);
+        add(direction, grid);
+        move(direction, grid);
     }
 
     @Override
     public int itemAt(int x, int y) {
         return grid[x][y];
+    }
+
+    @Override
+    public boolean isGameOver() {
+        int[][] temp = new int[grid.length][];
+        for (int i = 0; i < grid.length; i++) {
+            temp[i] = grid[i].clone();
+        }
+        action(Direction.up, temp);
+        if(Arrays.deepEquals(temp, grid)) {
+            action(Direction.down, temp);
+            if(Arrays.deepEquals(temp, grid)) {
+                action(Direction.left, temp);
+                if(Arrays.deepEquals(temp, grid)) {
+                    action(Direction.right, temp);
+                    if(Arrays.deepEquals(temp, grid)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -77,7 +105,7 @@ public class GridController implements GridDataSupplier, GridDataInteract {
         }
     }
 
-    private void add(Direction dir) {
+    private void add(Direction dir, int[][] grid) {
         if (dir == Direction.up) {
             for (int x = 0; x < sizeX; x++) {
                 for (int y = 0; y < sizeY; y++) {
@@ -117,7 +145,7 @@ public class GridController implements GridDataSupplier, GridDataInteract {
         }
     }
 
-    private void move(Direction dir) {
+    private void move(Direction dir, int[][] grid) {
         if (dir == Direction.up) {
             for (int x = 0; x < sizeX; x++) {
                 int space = 0;

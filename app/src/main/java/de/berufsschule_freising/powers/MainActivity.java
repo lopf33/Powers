@@ -1,5 +1,7 @@
 package de.berufsschule_freising.powers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -39,22 +41,32 @@ public class MainActivity extends AppCompatActivity {
         CustomGestureDetector cgd = new CustomGestureDetector(gridController, gridController);
         gestureDetector = new GestureDetector(this, cgd);
 
-        gv.setOnTouchListener(new View.OnTouchListener() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        gv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 boolean r = gestureDetector.onTouchEvent(event);
                 gv.setAdapter(dataAdapter);
-                calcScore();
+                scoreView.setText(String.valueOf(calcScore()));
+                if(gridController.isGameOver())
+                {
+                    builder.setCancelable(true);
+                    builder.setTitle("Game Over!");
+                    builder.setMessage("Your score is: " + calcScore());
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
                 return r;
             }
         });
 
         gridController.generateItem();
-        calcScore();
+        scoreView.setText(String.valueOf(calcScore()));
     }
 
-    private void calcScore()
+    private int calcScore()
     {
         int score = 0;
         for(int[] arr : gridController.getGrid())
@@ -64,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 score += i;
             }
         }
-        scoreView.setText(String.valueOf(score));
+        return score;
     }
 
 }

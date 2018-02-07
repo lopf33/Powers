@@ -10,5 +10,6 @@ public interface GridDataSupplier {
     int getSizeY();
     int[][] getGrid();
     int itemAt(int x, int y);
+    boolean isGameOver();
 
 }
