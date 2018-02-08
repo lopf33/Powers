@@ -1,12 +1,14 @@
 package de.berufsschule_freising.powers;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GridView gv;
     private TextView scoreView;
+    private Button ngButton;
     private GridController gridController;
     private DataAdapter dataAdapter;
 
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         gv = (GridView) findViewById(R.id.gridView);
         scoreView = (TextView) findViewById(R.id.scoreField);
+        ngButton = (Button) findViewById(R.id.ngButton);
 
         gridController = new GridController(4,4);
         dataAdapter = new DataAdapter(this, gridController);
@@ -41,26 +45,8 @@ public class MainActivity extends AppCompatActivity {
         CustomGestureDetector cgd = new CustomGestureDetector(gridController, gridController);
         gestureDetector = new GestureDetector(this, cgd);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        gv.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                boolean r = gestureDetector.onTouchEvent(event);
-                gv.setAdapter(dataAdapter);
-                scoreView.setText(String.valueOf(calcScore()));
-                if(gridController.isGameOver())
-                {
-                    builder.setCancelable(true);
-                    builder.setTitle("Game Over!");
-                    builder.setMessage("Your score is: " + calcScore());
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-                return r;
-            }
-        });
+        gv.setOnTouchListener(new CustomOnTouch(this));
+        ngButton.setOnClickListener(new Recreate(this));
 
         gridController.generateItem();
         scoreView.setText(String.valueOf(calcScore()));
@@ -77,6 +63,52 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return score;
+    }
+
+    class CustomOnTouch implements View.OnTouchListener {
+
+        private AlertDialog dialog;
+        private AlertDialog.Builder builder;
+
+        public CustomOnTouch(Context c)
+        {
+            builder = new AlertDialog.Builder(c);
+            builder.setCancelable(true);
+            builder.setTitle("Game Over!");
+
+            dialog = builder.create();
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if(!gridController.isGameOver())
+            {
+                boolean r = gestureDetector.onTouchEvent(event);
+                gv.setAdapter(dataAdapter);
+                scoreView.setText(String.valueOf(calcScore()));
+                if(gridController.isGameOver())
+                {
+                    builder.setMessage("Your score is: " + calcScore());
+                    dialog = builder.create();
+                    dialog.show();
+                }
+                return r;
+            }
+            return true;
+        }
+    }
+
+    class Recreate implements View.OnClickListener
+    {
+        AppCompatActivity activity;
+        public Recreate(AppCompatActivity activity)
+        {
+            this.activity = activity;
+        }
+        @Override
+        public void onClick(View v) {
+            activity.recreate();
+        }
     }
 
 }

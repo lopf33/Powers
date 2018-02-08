@@ -36,7 +36,7 @@ public class GridItem extends android.support.v7.widget.AppCompatTextView {
         colors.put(64, Color.rgb(255,191,0));
         colors.put(128, Color.rgb(255,128,0));
         colors.put(256, Color.rgb(255,0,0));
-        colors.put(512, Color.rgb(255,128,0));
+        colors.put(512, Color.rgb(255,0,128));
         colors.put(1024, Color.rgb(255,0,255));
         colors.put(2048, Color.rgb(191,0,255));
     }
