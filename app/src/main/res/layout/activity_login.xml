@@ -11,19 +11,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Username"
-        app:layout_constraintStart_toStartOf="@+id/userField"
+        android:text="Email"
+        app:layout_constraintStart_toStartOf="@+id/emailField"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/userField"
+        android:id="@+id/emailField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="14"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         android:maxWidth="0dp"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
         android:layout_marginTop="8dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="@+id/passField"
-        app:layout_constraintTop_toBottomOf="@+id/userField" />
+        app:layout_constraintTop_toBottomOf="@+id/emailField" />
 
     <EditText
         android:id="@+id/passField"

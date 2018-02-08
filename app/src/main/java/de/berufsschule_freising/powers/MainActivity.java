@@ -3,6 +3,7 @@ package de.berufsschule_freising.powers;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private GridView gv;
     private TextView scoreView;
     private Button ngButton;
+    private Button menuButton;
     private GridController gridController;
     private DataAdapter dataAdapter;
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         gv = (GridView) findViewById(R.id.gridView);
         scoreView = (TextView) findViewById(R.id.scoreField);
         ngButton = (Button) findViewById(R.id.ngButton);
+        menuButton = (Button) findViewById(R.id.menuButton);
 
         gridController = new GridController(4,4);
         dataAdapter = new DataAdapter(this, gridController);
@@ -47,9 +50,16 @@ public class MainActivity extends AppCompatActivity {
 
         gv.setOnTouchListener(new CustomOnTouch(this));
         ngButton.setOnClickListener(new Recreate(this));
+        menuButton.setOnClickListener(new BackToMenu());
 
         gridController.generateItem();
         scoreView.setText(String.valueOf(calcScore()));
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        recreate();
     }
 
     private int calcScore()
@@ -108,6 +118,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             activity.recreate();
+        }
+    }
+
+    class BackToMenu implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            Intent i = new Intent(MainActivity.this, MenuActivity.class);
+            startActivity(i);
         }
     }
 

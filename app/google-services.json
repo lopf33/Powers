@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "958211019782",
+    "firebase_url": "https://powersapp-ebfcc.firebaseio.com",
+    "project_id": "powersapp-ebfcc",
+    "storage_bucket": "powersapp-ebfcc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958211019782:android:ac528e50a035e9bb",
+        "android_client_info": {
+          "package_name": "de.berufsschule_freising.powers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "958211019782-plpbnpgdrmcfji4q9ih18224bp4bs20i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqsEKRkvtdv9ngy0P8wsP1dJQeN8BP990"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
