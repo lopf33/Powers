@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Email"
-        app:layout_constraintStart_toStartOf="@+id/emailField"
+        app:layout_constraintStart_toStartOf="@+id/lEmailField"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/emailField"
+        android:id="@+id/lEmailField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -36,11 +36,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Password"
-        app:layout_constraintStart_toStartOf="@+id/passField"
-        app:layout_constraintTop_toBottomOf="@+id/emailField" />
+        app:layout_constraintStart_toStartOf="@+id/lPassField"
+        app:layout_constraintTop_toBottomOf="@+id/lEmailField" />
 
     <EditText
-        android:id="@+id/passField"
+        android:id="@+id/lPassField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -55,25 +55,30 @@
 
     <Button
         android:id="@+id/loginButton"
+        style="@android:style/Widget.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:background="@android:color/holo_blue_dark"
         android:text="Login"
-        app:layout_constraintEnd_toEndOf="@+id/passField"
-        app:layout_constraintStart_toStartOf="@+id/passField"
-        app:layout_constraintTop_toBottomOf="@+id/passField" />
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/lPassField"
+        app:layout_constraintStart_toStartOf="@+id/lPassField"
+        app:layout_constraintTop_toBottomOf="@+id/lPassField" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/lRegisterButton"
+        style="@android:style/Widget.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray"
         android:text="Register"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@+id/loginButton"
         app:layout_constraintStart_toStartOf="@+id/loginButton"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />

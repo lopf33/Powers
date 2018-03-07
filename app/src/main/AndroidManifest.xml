@@ -25,7 +25,8 @@
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".MenuActivity"/>
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".LeaderActivity"></activity>
     </application>
 
 </manifest>

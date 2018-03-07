@@ -13,10 +13,23 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Iterator;
+
+import de.berufsschule_freising.powers.adapters.CustomListAdapter;
 import de.berufsschule_freising.powers.adapters.DataAdapter;
 import de.berufsschule_freising.powers.applogic.GridController;
+import de.berufsschule_freising.powers.firebase.User;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DatabaseReference ref;
 
     private GridView gv;
     private TextView scoreView;
@@ -25,12 +38,18 @@ public class MainActivity extends AppCompatActivity {
     private GridController gridController;
     private DataAdapter dataAdapter;
 
+    private Intent parentIntent;
+
     private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        parentIntent = getIntent();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ref = database.getReference("/users");
 
         gv = (GridView) findViewById(R.id.gridView);
         scoreView = (TextView) findViewById(R.id.scoreField);
@@ -56,12 +75,6 @@ public class MainActivity extends AppCompatActivity {
         scoreView.setText(String.valueOf(calcScore()));
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        recreate();
-    }
-
     private int calcScore()
     {
         int score = 0;
@@ -73,6 +86,27 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return score;
+    }
+
+    private void updateDatabaseHighScore()
+    {
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.child(parentIntent.getStringExtra("userId")).getValue(User.class);
+
+                user.setHighScore(calcScore());
+                HashMap<String, Object> data = new HashMap<>();
+                data.put(parentIntent.getStringExtra("userId"), user);
+                ref.updateChildren(data);
+                ref.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     class CustomOnTouch implements View.OnTouchListener {
@@ -101,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     builder.setMessage("Your score is: " + calcScore());
                     dialog = builder.create();
                     dialog.show();
+                    updateDatabaseHighScore();
                 }
                 return r;
             }
@@ -127,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v)
         {
             Intent i = new Intent(MainActivity.this, MenuActivity.class);
+            i.putExtra("userId", parentIntent.getStringExtra("userId"));
             startActivity(i);
         }
     }
