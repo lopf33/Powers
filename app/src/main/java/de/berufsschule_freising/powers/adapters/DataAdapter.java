@@ -24,21 +24,6 @@ public class DataAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return dataSupplier.getSizeX()*dataSupplier.getSizeY();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         int xpos, ypos = 0;
         GridItem gridItem = new GridItem(context);
@@ -56,7 +41,21 @@ public class DataAdapter extends BaseAdapter {
             gridItem = (GridItem) convertView;
         }
         return gridItem;
+    }
 
+    @Override
+    public int getCount() {
+        return dataSupplier.getSizeX()*dataSupplier.getSizeY();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
     }
 
 }

@@ -48,8 +48,6 @@ public class GridItem extends android.support.v7.widget.AppCompatTextView {
             Drawable drawable = ContextCompat.getDrawable(context, R.drawable.rounded_corner);
             drawable.setColorFilter(colors.get(value), PorterDuff.Mode.SRC);
             setBackground(drawable);
-            //super.setBackgroundColor(colors.get(value));
-            //setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_corner));
         }
 
     }

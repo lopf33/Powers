@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,12 +36,15 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText passField;
     private EditText userField;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("/users");
 
@@ -51,59 +55,76 @@ public class RegisterActivity extends AppCompatActivity {
 
         registerButton.setOnClickListener(new Register());
 
+        progressBar = (ProgressBar) findViewById(R.id.rPBar);
+        progressBar.setVisibility(View.INVISIBLE);
+
     }
 
     private void updateUI(FirebaseUser user) {
         Intent i = new Intent(RegisterActivity.this, MenuActivity.class);
         i.putExtra("userId", user.getUid());
+        progressBar.setVisibility(View.INVISIBLE);
         startActivity(i);
+    }
+
+    private void checkUsername()
+    {
+        final boolean[] userExists = {false};
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                while (iterator.hasNext()) {
+                    User user = iterator.next().getValue(User.class);
+                    if (user.getName().equals(userField.getText().toString())) {
+                        userExists[0] = true;
+                    }
+                }
+                if (!userExists[0]) {
+                    register();
+                }
+                else {
+                    Toast.makeText(RegisterActivity.this, "Username already taken!",
+                            Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+                ref.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                ref.removeEventListener(this);
+            }
+        });
+    }
+
+    private void register()
+    {
+        mAuth.createUserWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            HashMap<String, Object> data = new HashMap<>();
+                            data.put(user.getUid(), new User(userField.getText().toString()));
+                            ref.updateChildren(data);
+                            updateUI(user);
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
     }
 
     class Register implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             if (!emailField.getText().toString().isEmpty() && !passField.getText().toString().isEmpty() && !userField.getText().toString().isEmpty()) {
-                final boolean[] userExists = {false};
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                        while (iterator.hasNext()) {
-                            User user = iterator.next().getValue(User.class);
-                            if (user.getName().equals(userField.getText().toString())) {
-                                userExists[0] = true;
-                            }
-                        }
-                        if (!userExists[0]) {
-                            mAuth.createUserWithEmailAndPassword(emailField.getText().toString(), passField.getText().toString())
-                                    .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                // Sign in success, update UI with the signed-in user's information
-                                                FirebaseUser user = mAuth.getCurrentUser();
-                                                HashMap<String, Object> data = new HashMap<>();
-                                                data.put(user.getUid(), new User(userField.getText().toString()));
-                                                ref.updateChildren(data);
-                                                updateUI(user);
-                                            } else {
-                                                // If sign in fails, display a message to the user.
-                                                Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Username already taken!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                progressBar.setVisibility(View.VISIBLE);
+                checkUsername();
             } else {
                 Toast.makeText(RegisterActivity.this, "You need to fill all fields!",
                         Toast.LENGTH_SHORT).show();

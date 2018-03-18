@@ -24,6 +24,7 @@ public class GridController implements GridDataSupplier, GridDataInteract {
                 grid[x][y] = 0;
             }
         }
+        emptyPoints = new ArrayList<>();
     }
 
     @Override
@@ -59,6 +60,7 @@ public class GridController implements GridDataSupplier, GridDataInteract {
 
     @Override
     public boolean isGameOver() {
+
         int[][] temp = new int[grid.length][];
         for (int i = 0; i < grid.length; i++) {
             temp[i] = grid[i].clone();
@@ -77,6 +79,7 @@ public class GridController implements GridDataSupplier, GridDataInteract {
             }
         }
         return false;
+
     }
 
     @Override
@@ -95,7 +98,8 @@ public class GridController implements GridDataSupplier, GridDataInteract {
     }
 
     private void scanEmpty() {
-        emptyPoints = new ArrayList();
+
+        emptyPoints.clear();
         for(int x = 0; x < grid.length; x++) {
             for (int y = 0; y < grid[x].length; y++) {
                 if (grid[x][y] == 0) {
@@ -103,6 +107,7 @@ public class GridController implements GridDataSupplier, GridDataInteract {
                 }
             }
         }
+
     }
 
     private void add(Direction dir, int[][] grid) {

@@ -1,5 +1,6 @@
 package de.berufsschule_freising.powers;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +24,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button registerButton;
     private EditText email;
     private EditText password;
+    private ProgressBar progressBar;
+
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +42,15 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(new LoginClickListener());
         registerButton.setOnClickListener(new RegisterClickListener());
+
+        progressBar = (ProgressBar) findViewById(R.id.pBar);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void updateUI(FirebaseUser user) {
         Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
         intent.putExtra("userId", user.getUid());
+        progressBar.setVisibility(View.INVISIBLE);
         startActivity(intent);
     }
 
@@ -54,9 +63,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
                         } else {
                             Toast.makeText(LoginActivity.this, "Login failed!",
                                     Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
@@ -73,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         public void onClick(View v) {
             if(!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty())
             {
+                progressBar.setVisibility(View.VISIBLE);
                 login();
             }
             else
