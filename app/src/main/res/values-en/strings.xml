@@ -15,4 +15,5 @@
     <string name="newGame">New Game</string>
     <string name="menu">Menu</string>
     <string name="scores">Scores</string>
+    <string name="hello">Hello</string>
 </resources>

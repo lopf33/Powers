@@ -77,7 +77,7 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             User user = dataSnapshot.child(parentIntent.getStringExtra("userId")).getValue(User.class);
-            userField.setText("Hello, " + user.getName());
+            userField.setText(getString(R.string.hello) + ", " + user.getName());
         }
 
         @Override

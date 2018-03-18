@@ -15,4 +15,5 @@
     <string name="newGame">Neues Spiel</string>
     <string name="menu">Menü</string>
     <string name="scores">Spielstand</string>
+    <string name="hello">Hallo</string>
 </resources>
